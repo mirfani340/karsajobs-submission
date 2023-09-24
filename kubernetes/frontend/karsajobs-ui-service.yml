@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: karsajobs-ui # Name of the Service.
+  namespace: karsajobs-ns # Namespace where the Service will be created.
+  labels:
+    app: frontend # Labeling the Service with "app: frontend."
+
+spec:
+  selector:
+    app: frontend # Selects Pods with the label "app: frontend" to route traffic to.
+
+  ports:
+  - port: 8000 # The port on which the Service will listen internally within the cluster.
+    targetPort: 8000 # The port on which the Pods are listening.
+
+  type: NodePort # The type of Service, which is NodePort. This exposes the Service on a port on each node.

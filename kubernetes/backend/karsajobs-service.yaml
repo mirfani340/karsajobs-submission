@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: karsajobs-ns # Namespace where the Service will be created.
+  labels:
+    app: karsajobs # Labeling the Service with "app: karsajobs."
+  name: backend # Name of the Service.
+
+spec:
+  selector:
+    app: backend # Selects Pods with the label "type: backend" to route traffic to.
+
+  ports:
+  - port: 8080 # The port on which the Service will listen internally within the cluster.
+    targetPort: 8080 # The port on which the Pods are listening.
+    nodePort: 31212 # The specific NodePort value to use for external access to the Service.
+  type: NodePort # The type of Service, which is NodePort. This exposes the Service on a port on each node.

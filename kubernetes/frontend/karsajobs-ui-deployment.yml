@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karsajobs-ui # Name of the Deployment.
+  namespace: karsajobs-ns # Namespace where the Deployment will be created.
+  labels:
+    app: frontend # Labeling the Deployment with "app: frontend."
+
+spec:
+  replicas: 1 # Specifies that there should be 1 replica of the application.
+
+  selector:
+    matchLabels:
+      app: frontend # Selects Pods with the label "app: frontend."
+
+  template:
+    metadata:
+      labels:
+        app: frontend # Labels the Pods created by this template with "app: frontend."
+
+    spec:
+      containers:
+      - name: karsajobs-ui # Name of the container.
+        image: ghcr.io/mirfani340/karsajobs-ui:latest # Specifies the container image to use.
+        imagePullPolicy: IfNotPresent # Defines the image pull policy.
+        resources:
+          limits:
+            memory: "1Gi" # Sets memory limits for the container.
+            cpu: "500m" # Sets CPU limits for the container.
+
+        ports:
+        - containerPort: 8000 # Exposes port 8000 in the container.
+
+        env:
+          - name: VUE_APP_BACKEND # Sets an environment variable named "VUE_APP_BACKEND."
+            value: http://backend.karsajobs-ns.svc.cluster.local:31212 # Assigns the value to the "VUE_APP_BACKEND" environment variable, this is using DNS instead of NodeIP.

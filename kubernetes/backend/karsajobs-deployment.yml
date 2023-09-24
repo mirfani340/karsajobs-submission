@@ -1,0 +1,51 @@
+apiVersion: apps/v1 # Specifies the Kubernetes API version for this resource.
+kind: Deployment # Specifies that this is a Deployment resource.
+
+metadata:
+  # Metadata section contains information about the Deployment.
+  name: backend # Sets the name of the Deployment to "backend."
+  namespace: karsajobs-ns # Deploys the resource in the "karsajobs-ns" namespace.
+  labels:
+    app: karsajobs # Labels the Deployment with the "app: karsajobs" label.
+    type: backend # Labels the Deployment with the "type: backend" label.
+
+spec:
+  replicas: 1 # Specifies that there should be one replica of the application.
+  selector:
+    matchLabels:
+      type: backend # Selects Pods with the label "type: backend."
+
+  template:
+    metadata:
+      labels:
+        app: karsajobs # Labels the Pods created by this template with "app: karsajobs."
+        type: backend # Labels the Pods with "type: backend."
+
+    spec:
+      containers:
+      - name: karsajobs-backend # Sets the name of the container.
+        image: ghcr.io/mirfani340/karsajobs:latest # Specifies the container image to use.
+        imagePullPolicy: IfNotPresent # Defines the image pull policy.
+        resources:
+          limits:
+            cpu: "250m" # Sets CPU limit for the container.
+            memory: "256Mi" # Sets memory limit for the container.
+
+        ports:
+        - containerPort: 8080 # Exposes port 8080 in the container.
+
+        env:
+          - name: APP_PORT # Sets an environment variable named "APP_PORT."
+            value: "8080" # Assigns the value "8080" to the "APP_PORT" environment variable.
+          - name: MONGO_HOST # Sets an environment variable named "MONGO_HOST."
+            value: mongo # Assigns the value "mongo" to the "MONGO_HOST" environment variable.
+          - name: MONGO_USER # Sets an environment variable named "MONGO_USER."
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret # Specifies the name of the Secret resource.
+                key: MONGO_ROOT_USERNAME # Specifies the key in the Secret to retrieve.
+          - name: MONGO_PASS # Sets an environment variable named "MONGO_PASS."
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret # Specifies the name of the Secret resource.
+                key: MONGO_ROOT_PASSWORD # Specifies the key in the Secret to retrieve.
