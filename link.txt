@@ -1,0 +1,5 @@
+Github Repo: https://github.com/mirfani340/karsajobs-submission
+
+Github Packages karsajobs: https://github.com/users/mirfani340/packages/container/package/karsajobs
+
+Github Packages karsajobs-ui: https://github.com/users/mirfani340/packages/container/package/karsajobs-ui
